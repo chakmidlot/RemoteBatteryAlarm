@@ -4,12 +4,11 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.BatteryManager
-import android.util.Log
-import android.widget.Toast
 import java.net.HttpURLConnection
 import java.net.URL
-import java.nio.charset.Charset
 import javax.net.ssl.HttpsURLConnection
+import android.content.Context.BATTERY_SERVICE
+
 
 class SendBattery(val level: String) : Thread(){
   override fun run() {
@@ -24,14 +23,11 @@ class SendBattery(val level: String) : Thread(){
 class BatteryReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        val level = getLevel(intent)
-
-        SendBattery(level.toString()).start()
+        val bm = context.getSystemService(BATTERY_SERVICE) as BatteryManager?
+        if (bm != null) {
+            val level = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
+            SendBattery(level.toString()).start()
+        }
     }
 
-    private fun getLevel(intent: Intent): Int {
-        val level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
-        val scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
-        return (level / scale.toFloat()).toInt()
-    }
 }

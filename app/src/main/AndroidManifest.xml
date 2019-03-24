@@ -13,22 +13,17 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
-        <service
-                android:name=".BatteryService"
-                android:enabled="true"
-                android:exported="false">
-        </service>
 
         <receiver
                 android:name=".BatteryReceiver"
                 android:enabled="true"
                 android:exported="true">
         </receiver>
-        <!--<receiver android:name=".BootReceiver">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.BOOT_COMPLETED"/>-->
-            <!--</intent-filter>-->
-        <!--</receiver>-->
+        <receiver android:name=".BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
 
         <activity android:name=".MainActivity">
             <intent-filter>
