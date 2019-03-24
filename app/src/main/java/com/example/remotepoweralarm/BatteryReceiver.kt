@@ -24,13 +24,14 @@ class SendBattery(val level: String) : Thread(){
 class BatteryReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        Log.d("battery", intent.action)
+        val level = getLevel(intent)
+
+        SendBattery(level.toString()).start()
+    }
+
+    private fun getLevel(intent: Intent): Int {
         val level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
         val scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
-        val batteryPct = level / scale.toFloat()
-
-        Log.d("battery", batteryPct.toString())
-        SendBattery(batteryPct.toString()).start()
-
+        return (level / scale.toFloat()).toInt()
     }
 }
