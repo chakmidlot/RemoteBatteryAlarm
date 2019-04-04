@@ -5,14 +5,14 @@ import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
 class Internet : BaseNotification{
-    override fun sendLevel(level: Int) {
-        Sender(level.toString()).start()
+    override fun sendLevel(deviceId: String, level: Int) {
+        Sender(deviceId, level.toString()).start()
     }
 }
 
-class Sender(private val level: String) : Thread(){
+class Sender(private val deviceId: String, private val level: String) : Thread(){
     override fun run() {
-        val url = URL("http://chakmidlot.net:4000/?battery=$level")
+        val url = URL("http://chakmidlot.net:6100/save_level?level=$level&device_id=$deviceId&charging=false")
         val conn = url.openConnection() as HttpURLConnection
         if(conn.responseCode == HttpsURLConnection.HTTP_OK){
             conn.disconnect()

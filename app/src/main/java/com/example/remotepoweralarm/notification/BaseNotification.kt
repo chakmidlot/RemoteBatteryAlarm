@@ -1,5 +1,5 @@
 package com.example.remotepoweralarm.notification
 
 interface BaseNotification {
-    fun sendLevel(level: Int)
+    fun sendLevel(deviceId: String, level: Int)
 }
